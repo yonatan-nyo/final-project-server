@@ -3,6 +3,8 @@ const bussinessRouter = express.Router();
 const bussinessController = require('../controllers/bussiness')
 
 
-// bussinessRouter.get("/login", bussinessController.login);
+bussinessRouter.get("/", bussinessController.readAllBussinesses);
+bussinessRouter.get("/:slug", bussinessController.getBussiness);
+bussinessRouter.post("/", bussinessController.addBussiness);
 
 module.exports = bussinessRouter;
