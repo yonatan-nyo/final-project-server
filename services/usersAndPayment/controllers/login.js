@@ -1,4 +1,3 @@
-const { ObjectId } = require("mongodb");
 const User = require("../models/user");
 const { signToken } = require("../helpers/jwt");
 
@@ -31,9 +30,7 @@ class loginController {
       }
     } catch (error) {
       console.error(error);
-      res
-        .status(500)
-        .json({ error: "An error occurred while processing your request" });
+      res.status(500).json({ error: "An error occurred while processing your request" });
     }
   }
 }
