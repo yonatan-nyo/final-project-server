@@ -8,10 +8,9 @@ const mongoConnect = async () => {
   try {
     const client = new MongoClient(connectionString);
     await client.connect();
-
-    console.log(client);
     const database = client.db("Bussiness");
     db = database;
+
     return database;
   } catch (err) {
     console.error(err);
