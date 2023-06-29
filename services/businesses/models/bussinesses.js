@@ -1,4 +1,3 @@
-const { ObjectId } = require("mongodb");
 const { getDatabase } = require("../config/connectionMongoDB");
 
 class Bussiness {
@@ -18,22 +17,17 @@ class Bussiness {
     });
   }
 
-  static async createBussiness(input) {
+  static async createBussiness({ name, slug, brandUrl, imagesUrl, locations, pdfUrl, fundNeeded, UserId }) {
     return this.getCollections().insertOne({
-      name: input.name,
-      slug: input.slug,
-      brandUrl: input.brandUrl,
-      imagesUrl: [input.imagesUrl],
-      locations: [
-        {
-          lat: input.locations[0].lat,
-          lng: input.locations[0].lng,
-        },
-      ],
-      pdfUrl: input.pdfUrl,
-      fundNeeded: +input.fundNeeded,
-      fundReceived: [input.fundReceived],
-      UserId: input.UserId,
+      name,
+      slug,
+      brandUrl,
+      imagesUrl,
+      locations,
+      pdfUrl,
+      fundNeeded: +fundNeeded,
+      fundReceived: [],
+      UserId,
     });
   }
 }

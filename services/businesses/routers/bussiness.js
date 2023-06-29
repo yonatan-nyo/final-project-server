@@ -1,10 +1,9 @@
 const express = require("express");
 const bussinessRouter = express.Router();
-const bussinessController = require('../controllers/bussiness')
+const bussinessController = require("../controllers/bussiness");
 
-
-bussinessRouter.get("/", bussinessController.readAllBussinesses);
-bussinessRouter.get("/:slug", bussinessController.getBussiness);
-bussinessRouter.post("/", bussinessController.addBussiness);
+bussinessRouter.get("/", bussinessController.getAll);
+bussinessRouter.post("/", bussinessController.post);
+bussinessRouter.get("/:slug", bussinessController.getBySlug);
 
 module.exports = bussinessRouter;
