@@ -30,6 +30,8 @@ class Bussiness {
       UserId,
     });
   }
+
+  
 }
 
 module.exports = Bussiness;
