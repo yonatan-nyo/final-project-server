@@ -7,11 +7,21 @@ const {
   resolver: PaymentResolver,
 } = require("./scheme/payment");
 
+const {
+  typeDef: businessTypeDefs,
+  resolver: businessResolvers,
+} = require("./scheme/business");
+
+const {
+  typeDef: fundTypeDefs,
+  resolver: fundResolvers,
+} = require("./scheme/fund");
+
 (async () => {
   // Define Server
   const server = new ApolloServer({
-    typeDefs: [UserType, PaymentType],
-    resolvers: [UserResolver, PaymentResolver],
+    typeDefs: [UserType, PaymentType,businessTypeDefs,fundTypeDefs],
+    resolvers: [UserResolver, PaymentResolver,businessResolvers,fundResolvers],
     introspection: true,
   });
 
