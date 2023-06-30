@@ -78,14 +78,22 @@ class fundController {
       // Hardcode
       const BussinessId = "649d9b207290febfcf5211d9"; //ambil dari req.body client
       const UserId = "649c1fb2e097160432a50318"; //based yg login
-      console.log("🚀 ~ file: funds.js:77 ~ fundController ~ fundSuccess ~ BussinessId:", BussinessId)
-      console.log("🚀 ~ file: funds.js:78 ~ fundController ~ fundSuccess ~ UserId:", UserId)
-      
+      console.log(
+        "🚀 ~ file: funds.js:77 ~ fundController ~ fundSuccess ~ BussinessId:",
+        BussinessId
+      );
+      console.log(
+        "🚀 ~ file: funds.js:78 ~ fundController ~ fundSuccess ~ UserId:",
+        UserId
+      );
+
       const findBusiness = await Bussiness.findById({
         _id: new ObjectId(`${BussinessId}`),
-      })
-      console.log("🚀 ~ file: funds.js:88 ~ fundController ~ fundSuccess ~ findBusiness:", findBusiness)
-
+      });
+      console.log(
+        "🚀 ~ file: funds.js:88 ~ fundController ~ fundSuccess ~ findBusiness:",
+        findBusiness
+      );
 
       await Fund.createFund({
         PaymentId,
