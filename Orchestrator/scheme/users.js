@@ -63,8 +63,6 @@ const resolver = {
     },
 
     editUsername: async (_, { username, token }) => {
-      console.log(username, "bibiubiubiu");
-      console.log(token, "token");
       const response = await axios.patch(
         `${USER_URL}/users/profile`,
         {
