@@ -2,6 +2,7 @@ const { getDatabase } = require("../config/connectionMongoDB");
 const { ObjectId } = require("mongodb");
 const Fund = require("../models/funds");
 const midtransClient = require("midtrans-client");
+const Bussiness = require("../models/bussinesses");
 
 class fundController {
   static async readAllFunds(req, res, next) {
@@ -28,14 +29,15 @@ class fundController {
     }
   }
 
-  //masih nyoba nyoba aja
   static async createPaymentMidtrans(req, res, next) {
     try {
-      const { slug } = req.params;
       const { amount } = req.body;
 
-      // const UserId = await User.findByPk(req.user.id) //based id login
+      //Hardcode
+      const BussinessId = "649db342bda3ada3ae4a526c"; //ambil dari req.body client
       const UserId = "649c1fb2e097160432a50318";
+
+      // const UserId = await User.findByPk(req.user.id) //based id login
       let snap = new midtransClient.Snap({
         isProduction: false,
         serverKey: process.env.MIDTRANS_SERVER_KEY,
@@ -57,37 +59,51 @@ class fundController {
       };
 
       const midtrans_token = await snap.createTransaction(parameter);
-      
-      //database fund pending
-      const midtrans_database = await Fund.createFund({
-        order_name: parameter.transaction_details.order_id,
+
+      res.status(201).json({
+        redirect_url: midtrans_token.redirect_url,
         token: midtrans_token.token,
-        URL: midtrans_token.redirect_url,
-        amount: +amount,
-        UserId,
-        PaymentId:
-          "TRANSACTION_" + Math.floor(1000000 + Math.random() * 9000000),
-        receiver: slug,
-        status: "Pending",
+        PaymentId: parameter.transaction_details.order_id,
+        BussinessId,
       });
-      
-      res.status(201).json(midtrans_token);
     } catch (err) {
       next(err);
     }
   }
 
-  static async postSuccess(req, res, next) {
+  static async fundSuccess(req, res, next) {
     try {
-      const { slug } = req.params;
+      const { amount, PaymentId } = req.body;
+      // const { UserId } = req.headers;
+      // Hardcode
+      const BussinessId = "649d9b207290febfcf5211d9"; //ambil dari req.body client
+      const UserId = "649c1fb2e097160432a50318"; //based yg login
+      console.log("🚀 ~ file: funds.js:77 ~ fundController ~ fundSuccess ~ BussinessId:", BussinessId)
+      console.log("🚀 ~ file: funds.js:78 ~ fundController ~ fundSuccess ~ UserId:", UserId)
+      
+      const findBusiness = await Bussiness.findById({
+        _id: new ObjectId(`${BussinessId}`),
+      })
+      console.log("🚀 ~ file: funds.js:88 ~ fundController ~ fundSuccess ~ findBusiness:", findBusiness)
 
-      const success = await Fund.fundingSuccess(
-        { slug },
-        { $set: { status: "Paid" } }
+
+      await Fund.createFund({
+        PaymentId,
+        amount: +amount,
+        UserId,
+        BussinessId,
+      });
+
+      const addReceivedFund = await Bussiness.fundingSuccess({
+        amount,
+        BussinessId,
+      });
+      console.log(
+        "🚀 ~ file: funds.js:94 ~ fundController ~ fundSuccess ~ addReceivedFund:",
+        addReceivedFund
       );
-      console.log("🚀 ~ file: funds.js:94 ~ fundController ~ postSuccess ~ success:", success)
 
-      res.status(200).json(`Payment success`);
+      res.status(201).json("Payment Success");
     } catch (err) {
       next(err);
     }

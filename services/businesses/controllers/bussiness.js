@@ -29,6 +29,7 @@ class bussinessController {
     try {
       const {
         name,
+        overview,
         brandUrl,
         imagesUrl,
         locations,
@@ -43,6 +44,7 @@ class bussinessController {
         {
           name,
           slug,
+          overview,
           brandUrl,
           imagesUrl,
           locations,
@@ -51,8 +53,6 @@ class bussinessController {
           UserId, //req.user.id :diambil dari ID login
         }
       );
-
-      
 
       res.status(201).json(`Business ${name} is created!`);
     } catch (err) {
