@@ -20,8 +20,13 @@ const {
 (async () => {
   // Define Server
   const server = new ApolloServer({
-    typeDefs: [UserType, PaymentType,businessTypeDefs,fundTypeDefs],
-    resolvers: [UserResolver, PaymentResolver,businessResolvers,fundResolvers],
+    typeDefs: [UserType, PaymentType, businessTypeDefs, fundTypeDefs],
+    resolvers: [
+      UserResolver,
+      PaymentResolver,
+      businessResolvers,
+      fundResolvers,
+    ],
     introspection: true,
   });
 
