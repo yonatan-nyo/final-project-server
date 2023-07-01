@@ -2,7 +2,6 @@ const { convertToSlug } = require("../helpers/covertToSlug");
 const Bussiness = require("../models/bussinesses");
 const Fund = require("../models/funds");
 
-
 class bussinessController {
   static async getAll(req, res, next) {
     try {
@@ -27,32 +26,21 @@ class bussinessController {
 
   static async post(req, res, next) {
     try {
-      const {
+      const { name, overview, brandUrl, imagesUrl, locations, pdfUrl, fundNeeded, UserId } = req.body;
+      const slug = convertToSlug(name);
+
+      // const t = await sequelize.transaction();
+      await Bussiness.createBussiness({
         name,
+        slug,
         overview,
         brandUrl,
         imagesUrl,
         locations,
         pdfUrl,
         fundNeeded,
-        UserId,
-      } = req.body;
-      const slug = convertToSlug(name);
-
-      // const t = await sequelize.transaction();
-      await Bussiness.createBussiness(
-        {
-          name,
-          slug,
-          overview,
-          brandUrl,
-          imagesUrl,
-          locations,
-          pdfUrl,
-          fundNeeded,
-          UserId, //req.user.id :diambil dari ID login
-        }
-      );
+        UserId, //req.user.id :diambil dari ID login
+      });
 
       res.status(201).json(`Business ${name} is created!`);
     } catch (err) {
