@@ -17,6 +17,8 @@ const {
   resolver: fundResolvers,
 } = require("./scheme/fund");
 
+const { test } = require("./test/apollo.test");
+
 (async () => {
   // Define Server
   const server = new ApolloServer({
@@ -31,4 +33,9 @@ const {
   });
 
   console.log(`🚀  Server ready at: ${url}`);
+
+  // Run Tests
+  await test();
 })();
+
+
