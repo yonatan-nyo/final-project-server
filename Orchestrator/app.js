@@ -1,5 +1,4 @@
 const { ApolloServer } = require("@apollo/server");
-const { startStandaloneServer } = require("@apollo/server/standalone");
 
 const { typeDef: UserType, resolver: UserResolver } = require("./scheme/users");
 const {
@@ -7,7 +6,7 @@ const {
   resolver: PaymentResolver,
 } = require("./scheme/payment");
 
-(async () => {
+const createServer = () => {
   // Define Server
   const server = new ApolloServer({
     typeDefs: [UserType, PaymentType],
@@ -15,10 +14,21 @@ const {
     introspection: true,
   });
 
-  // Start Server
-  const { url } = await startStandaloneServer(server, {
-    listen: { port: 4000 },
-  });
+  return server;
+};
 
-  console.log(`🚀  Server ready at: ${url}`);
-})();
+// Only run the server if this file is run directly (i.e., not when imported as a module in a test environment)
+if (require.main === module) {
+  const { startStandaloneServer } = require("@apollo/server/standalone");
+  (async () => {
+    const server = createServer();
+    const { url } = await startStandaloneServer(server, {
+      listen: { port: 4000 },
+    });
+    console.log(`🚀  Server ready at: ${url}`);
+  })();
+}
+
+module.exports = {
+  createServer,
+};
