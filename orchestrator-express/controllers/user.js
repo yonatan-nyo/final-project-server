@@ -18,6 +18,8 @@ class userController {
         method: "GET",
         headers: req.headers,
       });
+
+      
       res.status(response.status).json(response.data);
     } catch (error) {
       console.error(error);

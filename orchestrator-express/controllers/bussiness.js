@@ -46,7 +46,14 @@ class bussinessController {
 
   static async post(req, res, next) {
     try {
-      
+      const {data: user} = await axios({
+        url: `${USER_URL}/users/profile`,
+        method: "GET",
+        headers: req.headers,
+      });
+      console.log("🚀 ~ file: bussiness.js:54 ~ bussinessController ~ post ~ user:", user)
+
+
       const {
         name,
         overview,
@@ -55,7 +62,7 @@ class bussinessController {
         locations,
         pdfUrl,
         fundNeeded,
-        UserId,
+        
       } = req.body;
 
       const { data } = await axios.post(`${BUSSINESS_URL}/bussinesses`, {
@@ -66,7 +73,7 @@ class bussinessController {
         locations,
         pdfUrl,
         fundNeeded,
-        UserId,
+        UserId:user.id
       });
 
       redis.del("bussinesses");
