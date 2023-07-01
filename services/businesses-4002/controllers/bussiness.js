@@ -1,6 +1,5 @@
 const { convertToSlug } = require("../helpers/covertToSlug");
 const Bussiness = require("../models/bussinesses");
-const Fund = require("../models/funds");
 
 class bussinessController {
   static async getAll(req, res, next) {

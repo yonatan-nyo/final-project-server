@@ -1,5 +1,4 @@
 const { getDatabase } = require("../config/connectionMongoDB");
-const ObjectId = require("mongodb").ObjectId;
 
 class Bussiness {
   static getCollections() {
@@ -43,20 +42,6 @@ class Bussiness {
       UserId,
       locationDetail,
     });
-  }
-
-  static async fundingSuccess({ amount, BussinessId }) {
-    const query = {
-      _id: new ObjectId(`${BussinessId}`),
-    };
-
-    const update = {
-      $push: {
-        fundReceived: +amount,
-      },
-    };
-
-    return this.getCollections().updateOne(query, update);
   }
 }
 

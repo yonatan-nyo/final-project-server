@@ -5,30 +5,6 @@ const midtransClient = require("midtrans-client");
 const Bussiness = require("../models/bussinesses");
 
 class fundController {
-  static async readAllFunds(req, res, next) {
-    try {
-      const data = await Fund.findAll();
-
-      res.status(200).json(data);
-    } catch (err) {
-      console.log(err);
-      res.status(500).json({
-        message: "Internal server error",
-      });
-    }
-  }
-
-  static async getBySlug(req, res, next) {
-    try {
-      const { slug } = req.params;
-      const data = await Fund.findBySlug(slug);
-
-      res.status(200).json(data);
-    } catch (err) {
-      next(err);
-    }
-  }
-
   static async createPaymentMidtrans(req, res, next) {
     try {
       const { amount } = req.body;
@@ -45,8 +21,7 @@ class fundController {
 
       let parameter = {
         transaction_details: {
-          order_id:
-            "TRANSACTION_" + Math.floor(1000000 + Math.random() * 9000000), //harus unique
+          order_id: "TRANSACTION_" + Math.floor(1000000 + Math.random() * 9000000), //harus unique
           gross_amount: amount,
         },
         credit_card: {
@@ -78,14 +53,13 @@ class fundController {
       // Hardcode
       const BussinessId = "649d9b207290febfcf5211d9"; //ambil dari req.body client
       const UserId = "649c1fb2e097160432a50318"; //based yg login
-      console.log("🚀 ~ file: funds.js:77 ~ fundController ~ fundSuccess ~ BussinessId:", BussinessId)
-      console.log("🚀 ~ file: funds.js:78 ~ fundController ~ fundSuccess ~ UserId:", UserId)
-      
+      console.log("🚀 ~ file: funds.js:77 ~ fundController ~ fundSuccess ~ BussinessId:", BussinessId);
+      console.log("🚀 ~ file: funds.js:78 ~ fundController ~ fundSuccess ~ UserId:", UserId);
+
       const findBusiness = await Bussiness.findById({
         _id: new ObjectId(`${BussinessId}`),
-      })
-      console.log("🚀 ~ file: funds.js:88 ~ fundController ~ fundSuccess ~ findBusiness:", findBusiness)
-
+      });
+      console.log("🚀 ~ file: funds.js:88 ~ fundController ~ fundSuccess ~ findBusiness:", findBusiness);
 
       await Fund.createFund({
         PaymentId,
@@ -98,10 +72,7 @@ class fundController {
         amount,
         BussinessId,
       });
-      console.log(
-        "🚀 ~ file: funds.js:94 ~ fundController ~ fundSuccess ~ addReceivedFund:",
-        addReceivedFund
-      );
+      console.log("🚀 ~ file: funds.js:94 ~ fundController ~ fundSuccess ~ addReceivedFund:", addReceivedFund);
 
       res.status(201).json("Payment Success");
     } catch (err) {
