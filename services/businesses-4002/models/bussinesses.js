@@ -1,5 +1,4 @@
 const { getDatabase } = require("../config/connectionMongoDB");
-const ObjectId = require("mongodb").ObjectId;
 
 class Bussiness {
   static getCollections() {
@@ -18,13 +17,6 @@ class Bussiness {
     });
   }
 
-  static async findById(_id) {
-    console.log("🚀 ~ file: bussinesses.js:22 ~ Bussiness ~ findById ~ _id:", _id)
-    return this.getCollections().findOne({
-      _id
-    })
-  }
-
   static async createBussiness({
     name,
     slug,
@@ -35,6 +27,7 @@ class Bussiness {
     pdfUrl,
     fundNeeded,
     UserId,
+    locationDetail,
   }) {
     return this.getCollections().insertOne({
       name,
@@ -47,21 +40,8 @@ class Bussiness {
       fundNeeded: +fundNeeded,
       fundReceived: [],
       UserId,
+      locationDetail,
     });
-  }
-
-  static async fundingSuccess({ amount, BussinessId }) {
-    const query = {
-      _id: new ObjectId(`${BussinessId}`),
-    };
-    
-    const update = {
-      $push: {
-        fundReceived: +amount,
-      },
-    };
-    
-    return this.getCollections().updateOne(query, update);
   }
 }
 

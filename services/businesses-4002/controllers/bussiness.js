@@ -1,22 +1,18 @@
 const { convertToSlug } = require("../helpers/covertToSlug");
 const Bussiness = require("../models/bussinesses");
-const Fund = require("../models/funds");
 
 class bussinessController {
   static async getAll(req, res, next) {
-    try {
-      const data = await Bussiness.findAll();
+    const data = await Bussiness.findAll();
 
-      res.status(200).json(data);
-    } catch (err) {
-      next(err);
-    }
+    res.status(200).json(data);
   }
 
   static async getBySlug(req, res, next) {
     try {
       const { slug } = req.params;
       const data = await Bussiness.findBySlug(slug);
+      if (!data) throw { msg: "Business not found", statusCode: 404 };
 
       res.status(200).json(data);
     } catch (err) {
@@ -26,10 +22,12 @@ class bussinessController {
 
   static async post(req, res, next) {
     try {
-      const { name, overview, brandUrl, imagesUrl, locations, pdfUrl, fundNeeded, UserId } = req.body;
+      const { name, overview, brandUrl, imagesUrl, locations, pdfUrl, fundNeeded, UserId, locationDetail } = req.body;
+      if (!name || !overview || !brandUrl || !imagesUrl || !locations || !pdfUrl || !fundNeeded || !UserId || !locationDetail) {
+        throw { msg: "Please fill all fields", statusCode: 400 };
+      }
       const slug = convertToSlug(name);
 
-      // const t = await sequelize.transaction();
       await Bussiness.createBussiness({
         name,
         slug,
@@ -40,6 +38,7 @@ class bussinessController {
         pdfUrl,
         fundNeeded,
         UserId, //req.user.id :diambil dari ID login
+        locationDetail,
       });
 
       res.status(201).json(`Business ${name} is created!`);
