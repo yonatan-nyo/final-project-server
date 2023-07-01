@@ -18,10 +18,11 @@ class userController {
 
   static async readProfile(req, res, next) {
     try {
-      const {
-        user: { _id },
-      } = req;
+      // const {
+      //   user: { _id },
+      // } = req;
 
+      const _id = req.user._id;
       const user = await User.getById(_id);
 
       if (!user) {

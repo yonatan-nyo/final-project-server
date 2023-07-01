@@ -4,6 +4,7 @@ const { getDatabase } = require("../config/connectionMongoDB");
 class User {
   static getCollections() {
     const db = getDatabase();
+    // console.log(String(db));
     const users = db.collection("Users");
     return users;
   }

@@ -1,6 +1,8 @@
 const { MongoClient } = require("mongodb");
 
-const connectionString = process.env.MONGODB || "mongodb+srv://nafiirfanzidny:yQAc8taMBKVev0Vr@cluster0.qpwboif.mongodb.net";
+const connectionString =
+  process.env.MONGODB ||
+  "mongodb+srv://nafiirfanzidny:yQAc8taMBKVev0Vr@cluster0.qpwboif.mongodb.net";
 
 let db = null;
 

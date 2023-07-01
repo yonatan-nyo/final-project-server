@@ -22,7 +22,9 @@ app.use(ErrorHandler);
 (async () => {
   try {
     await mongoConnect();
-    app.listen(port, (_) => console.log(`Services-UsersAndPayment is listening at port ${port}`));
+    app.listen(port, (_) =>
+      console.log(`Services-UsersAndPayment is listening at port ${port}`)
+    );
   } catch (err) {
     console.log(`Failed to connect to mongodb`);
   }

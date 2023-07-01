@@ -4,16 +4,13 @@ const User = require("../models/user");
 
 const authentication = async (req, res, next) => {
   try {
-    const { authorization: token } = req.headers;
-
+    const { token } = req.headers;
     if (!token) {
       return res.status(401).json({ message: "No token provided" });
     }
 
     const payload = verifyToken(token);
-    const user = await User.getCollections().findOne({
-      _id: new ObjectId(payload.id),
-    });
+    const user = await User.getById(new ObjectId(payload.id));
 
     if (!user) {
       return res.status(401).json({ message: "User not found" });
