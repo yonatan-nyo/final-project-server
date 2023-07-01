@@ -3,7 +3,6 @@ const cors = require("cors");
 const express = require("express");
 const bussinessRouter = require("./routers/bussiness");
 const fundRouter = require("./routers/fund");
-1;
 const ErrorHandler = require("./midlewares/ErrorHandler");
 const app = express();
 

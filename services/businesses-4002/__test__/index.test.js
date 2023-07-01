@@ -25,6 +25,7 @@ const initializeBussiness = baseBusinessInput;
 
 beforeAll(async () => {
   await mongoConnect();
+  await mongoConnect("BussinessTest");
   await getDatabase().collection("Bussinesses").deleteMany();
   const business = await Bussiness.createBussiness(initializeBussiness);
   initializeBussiness._id = new ObjectId(business.insertedId).toString();
