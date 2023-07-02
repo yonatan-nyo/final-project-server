@@ -29,7 +29,7 @@ app.use("/payments", paymentRouter);
 
 app.use(ErrorHandler);
 
-() => {
+(() => {
   try {
     InitializeRedis();
     app.listen(port, () => {
@@ -38,6 +38,6 @@ app.use(ErrorHandler);
   } catch (error) {
     console.log("Failed initialize redis");
   }
-};
+})();
 
 // module.exports = app
