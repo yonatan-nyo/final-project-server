@@ -50,18 +50,19 @@ class fundController {
   static async fundSuccess(req, res, next) {
     try {
       const { amount, PaymentId, BussinessId, UserId } = req.body;
-
+      
       await Fund.createFund({
         PaymentId,
         amount: +amount,
         UserId,
         BussinessId,
       });
-
-      // await Bussiness.addFundReceived({
-      //   //ketika payment fund succes maka amount nya akan di tambahkan/push ke fundReceived Bussines
-      // })
-
+      
+      await Bussiness.findOne({ _id:BussinessId  });
+      await Bussiness.addFundReceived({
+        BussinessId,
+        amount:+amount
+      })
       res.status(201).json("Payment Success");
     } catch (err) {
       next(err);
