@@ -4,13 +4,8 @@ const { getDatabase } = require("../config/connectionMongoDB");
 class User {
   static getCollections() {
     const db = getDatabase();
-    // console.log(String(db));
     const users = db.collection("Users");
     return users;
-  }
-
-  static async findAll() {
-    return this.getCollections().find().toArray();
   }
 
   static async getById(id) {
@@ -24,14 +19,10 @@ class User {
       socialMedia,
     });
 
-    if (result.acknowledged && result.insertedId) {
-      const insertedUser = await this.getCollections().findOne({
-        _id: result.insertedId,
-      });
-      return insertedUser;
-    } else {
-      throw new Error("Failed to create user");
-    }
+    const insertedUser = await this.getCollections().findOne({
+      _id: result.insertedId,
+    });
+    return insertedUser;
   }
 
   static async edit(id, username) {

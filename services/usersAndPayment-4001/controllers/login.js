@@ -6,20 +6,7 @@ class loginController {
     try {
       const { username, id, socialMedia } = req.body;
 
-      if (!username || typeof username !== "string") {
-        throw { statusCode: 400, msg: "Invalid or missing username" };
-      }
-
-      // if (!email || typeof email !== "string" || !email.includes("@")) {
-      //   return res.status(400).json({ error: "Invalid or missing email" });
-      // }
-
-      if (!socialMedia || typeof socialMedia !== "string") {
-        return res
-          .status(400)
-          .json({ error: "Invalid or missing socialMedia" });
-      }
-
+      if (!id || (id.length !== 24 && id.length !== 12) || !socialMedia) throw { statusCode: 400, msg: "Invalid credentials" };
       let user = await User.getById(id);
 
       if (!user) {
