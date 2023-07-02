@@ -2,8 +2,10 @@ const request = require("supertest");
 const app = require("../app");
 const { mongoConnect, mongoClose } = require("../config/connectionMongoDB");
 const User = require("../models/user");
+const { signToken } = require("../helpers/jwt");
 
 let token = null;
+const INVALID_TOKEN = signToken({ id: "64a011c13a704fb326aa4371" });
 
 beforeAll(async () => {
   await mongoConnect();
@@ -71,6 +73,13 @@ describe("Users", () => {
     const response = await request(app).get("/users/profile").set("Accept", "application/json");
     expect(response.status).toBe(401);
     expect(response.body).toBe("No token Provided");
+  });
+
+  it("GET /profile with invalid token", async () => {
+    const response = await request(app).get("/users/profile").set("Accept", "application/json").set("token", INVALID_TOKEN);
+
+    expect(response.status).toBe(401);
+    expect(response.body).toBe("User not found");
   });
 
   // PATCH profile

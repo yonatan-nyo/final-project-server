@@ -10,9 +10,7 @@ const authentication = async (req, res, next) => {
     const payload = verifyToken(token);
     const user = await User.getById(new ObjectId(payload.id));
 
-    if (!user) {
-      return res.status(401).json({ message: "User not found" });
-    }
+    if (!user) throw { statusCode: 401, msg: "User not found" };
 
     req.user = user;
     next();
