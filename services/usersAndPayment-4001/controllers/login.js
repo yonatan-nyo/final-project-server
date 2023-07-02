@@ -1,4 +1,3 @@
-// Kontroler login
 const User = require("../models/user");
 const { signToken } = require("../helpers/jwt");
 
@@ -6,6 +5,20 @@ class loginController {
   static async login(req, res) {
     try {
       const { username, email, socialMedia } = req.body;
+
+      if (!username || typeof username !== "string") {
+        return res.status(400).json({ error: "Invalid or missing username" });
+      }
+
+      if (!email || typeof email !== "string" || !email.includes("@")) {
+        return res.status(400).json({ error: "Invalid or missing email" });
+      }
+
+      if (!socialMedia || typeof socialMedia !== "string") {
+        return res
+          .status(400)
+          .json({ error: "Invalid or missing socialMedia" });
+      }
 
       let user = await User.getCollections().findOne({ email });
 
@@ -38,9 +51,7 @@ class loginController {
       }
     } catch (error) {
       console.error(error);
-      res
-        .status(500)
-        .json({ error: "An error occurred while processing your request" });
+      next(error);
     }
   }
 }

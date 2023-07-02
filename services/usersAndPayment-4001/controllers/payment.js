@@ -6,6 +6,12 @@ class paymentController {
       const { amount, BusinessId } = req.body;
       const UserId = req.user._id;
 
+      if (!amount || amount <= 0) {
+        return res.status(400).json({
+          message: `Invalid or missing amount. It should be a positive number.`,
+        });
+      }
+
       const newPayment = await Payment.create({
         amount,
         UserId,
@@ -18,15 +24,20 @@ class paymentController {
       });
     } catch (error) {
       console.log(error);
-      res.status(500).json({
-        message: "Internal server error",
-      });
+      next(error);
     }
   }
 
   static async getAllPayments(req, res, next) {
     try {
       const UserId = req.user._id;
+
+      if (!UserId || typeof UserId !== "string" || UserId.trim() === "") {
+        return res.status(400).json({
+          message: `Invalid or missing UserId`,
+        });
+      }
+
       const payments = await Payment.findByUserId(UserId);
 
       if (payments.length === 0) {
@@ -41,15 +52,19 @@ class paymentController {
       });
     } catch (error) {
       console.log(error);
-      res.status(500).json({
-        message: "Internal server error",
-      });
+      next(error);
     }
   }
 
   static async getPaymentById(req, res, next) {
     try {
       const { id } = req.params;
+
+      if (!id || typeof id !== "string" || id.trim() === "") {
+        return res.status(400).json({
+          message: `Invalid or missing payment ID`,
+        });
+      }
 
       const payment = await Payment.findById(id);
 
@@ -65,15 +80,19 @@ class paymentController {
       });
     } catch (error) {
       console.log(error);
-      res.status(500).json({
-        message: "Internal server error",
-      });
+      next(error);
     }
   }
 
   static async deletePayment(req, res, next) {
     try {
       const { id } = req.params;
+
+      if (!id || typeof id !== "string" || id.trim() === "") {
+        return res.status(400).json({
+          message: `Invalid or missing payment ID`,
+        });
+      }
 
       const result = await Payment.delete(id);
 
@@ -88,9 +107,7 @@ class paymentController {
       });
     } catch (error) {
       console.log(error);
-      res.status(500).json({
-        message: "Internal server error",
-      });
+      next(error);
     }
   }
 }
