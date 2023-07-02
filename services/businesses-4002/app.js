@@ -6,8 +6,12 @@ const fundRouter = require("./routers/fund");
 const ErrorHandler = require("./midlewares/ErrorHandler");
 const app = express();
 
-const port = process.env.PORT || 4002;
-
+app.use(
+  fileUpload({
+    createParentPath: true,
+    limits: { fileSize: 50 * 1024 * 1024 },
+  })
+);
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
