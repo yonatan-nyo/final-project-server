@@ -16,6 +16,7 @@ const loginRouter = require("./router/login");
 const { InitializeRedis } = require("./config/redisConfig");
 const fileUpload = require("express-fileupload");
 const compression = require("compression");
+const { initialize: initializeFirebase } = require("./config/admin");
 
 //middleware
 app.use(compression());
@@ -40,6 +41,7 @@ app.use(ErrorHandler);
 
 (() => {
   try {
+    initializeFirebase();
     InitializeRedis();
     app.listen(port, () => {
       console.log(`Orchestrator-express listening on port ${port}`);

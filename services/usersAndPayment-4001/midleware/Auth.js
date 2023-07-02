@@ -1,5 +1,4 @@
 const { verifyToken } = require("../helpers/jwt");
-const { ObjectId } = require("mongodb");
 const User = require("../models/user");
 
 const authentication = async (req, res, next) => {
