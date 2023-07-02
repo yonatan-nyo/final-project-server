@@ -4,23 +4,29 @@ class userController {
   static async readAllUsers(req, res, next) {
     try {
       const data = await User.findAll();
+      if (!data || data.length === 0) {
+        return res.status(404).json({
+          message: "No users found",
+        });
+      }
+
       res.status(200).json({
         message: "Successfully fetched all users",
         data,
       });
     } catch (err) {
       console.log(err);
-      res.status(500).json({
-        message: "Error occurred while fetching all users",
-      });
+      next(err);
     }
   }
 
   static async readProfile(req, res, next) {
     try {
-      // const {
-      //   user: { _id },
-      // } = req;
+      if (!req.user || !req.user._id) {
+        return res.status(400).json({
+          message: `Invalid request. User not authenticated.`,
+        });
+      }
 
       const _id = req.user._id;
       const user = await User.getById(_id);
@@ -37,9 +43,7 @@ class userController {
       });
     } catch (err) {
       console.log(err);
-      res.status(500).json({
-        message: "Error occurred while fetching user profile",
-      });
+      next(err);
     }
   }
 
@@ -49,6 +53,12 @@ class userController {
         user: { _id },
         body: { username },
       } = req;
+
+      if (!username || typeof username !== "string" || username.trim() === "") {
+        return res.status(400).json({
+          message: `Invalid or missing username`,
+        });
+      }
 
       const user = await User.getById(_id);
 
@@ -67,9 +77,7 @@ class userController {
       });
     } catch (err) {
       console.log(err);
-      res.status(500).json({
-        message: "Error occurred while updating username",
-      });
+      next(err);
     }
   }
 }
