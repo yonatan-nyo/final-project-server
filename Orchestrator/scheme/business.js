@@ -61,8 +61,6 @@ const resolver = {
       try {
         const { slug } = args;
         const { data } = await axios.get(`${BUSSINESS_URL}/bussinesses/${slug}`);
-
-        console.log("🚀 ~ file: business.js:64 ~ getBussiness: ~ data:", data)
        
 
         return data;

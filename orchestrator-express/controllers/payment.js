@@ -29,7 +29,6 @@ class PaymentController {
   static async getUserPayments(req, res) {
     try {
       const { token } = req.headers;
-      // console.log(req.headers.token, "-------------------------------------");
 
       const response = await axios.get(`${USER_URL}/payments`, {
         headers: {

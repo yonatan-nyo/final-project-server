@@ -3,6 +3,7 @@ const Bussiness = require("../models/bussinesses");
 
 class bussinessController {
   static async getAll(req, res, next) {
+    
     const data = await Bussiness.findAll();
 
     res.status(200).json(data);
@@ -23,7 +24,6 @@ class bussinessController {
   static async post(req, res, next) {
     try {
       const { name, overview, brandUrl, imagesUrl, locations, pdfUrl, fundNeeded,UserId, locationDetail} = req.body;
-      console.log("🚀 ~ file: bussiness.js:26 ~ bussinessController ~ post ~ UserId:", UserId)
       if (!name || !overview || !brandUrl || !imagesUrl || !locations || !pdfUrl || !fundNeeded || !UserId || !locationDetail ) {
         throw { msg: "Please fill all fields", statusCode: 400 };
       }
