@@ -14,8 +14,17 @@ const usersRouter = require("./router/user");
 const paymentRouter = require("./router/payment");
 const loginRouter = require("./router/login");
 const { InitializeRedis } = require("./config/redisConfig");
+const fileUpload = require("express-fileupload");
+const compression = require("compression");
 
 //middleware
+app.use(compression());
+app.use(
+  fileUpload({
+    createParentPath: true,
+    limits: { fileSize: 50 * 1024 * 1024 },
+  })
+);
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
