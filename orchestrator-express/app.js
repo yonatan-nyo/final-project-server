@@ -5,7 +5,7 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const port = process.env.PORT || 4000;
+const PORT = 4000;
 const ErrorHandler = require("./middlewares/ErrorHandler");
 
 const bussinessRouter = require("./router/bussiness");
@@ -13,6 +13,7 @@ const fundRouter = require("./router/fund");
 const usersRouter = require("./router/user");
 const paymentRouter = require("./router/payment");
 const loginRouter = require("./router/login");
+const { InitializeRedis } = require("./config/RedisConfig");
 
 //middleware
 app.use(cors());
@@ -28,8 +29,15 @@ app.use("/payments", paymentRouter);
 
 app.use(ErrorHandler);
 
-app.listen(port, () => {
-  console.log(`Orchestrator-express listening on port ${port}`);
-});
+(() => {
+  try {
+    InitializeRedis();
+    app.listen(PORT, () => {
+      console.log(`Example app listening on PORT ${PORT}`);
+    });
+  } catch (error) {
+    console.log("failed to InitializeRedis");
+  }
+})();
 
 // module.exports = app

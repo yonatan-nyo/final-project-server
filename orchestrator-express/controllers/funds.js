@@ -1,18 +1,12 @@
 const axios = require("axios");
-const Redis = require("ioredis");
 const BUSSINESS_URL = "http://localhost:4002";
 const USER_URL = "http://localhost:4001";
-
-const redis = new Redis({
-  port: 17893,
-  host: "redis-17893.c292.ap-southeast-1-1.ec2.cloud.redislabs.com",
-  password: "gPLuaVrS3WhdiI7uVvK3wHShgLGEB83h",
-});
 
 class fundController {
   static async fundSuccess(req, res, next) {
     try {
       //find UserID
+      const redis = getRedis();
       const { data: user } = await axios({
         url: `${USER_URL}/users/profile`,
         method: "GET",
@@ -34,7 +28,7 @@ class fundController {
         amount,
         PaymentId,
         UserId: user.user._id,
-        BussinessId:bussiness._id,
+        BussinessId: bussiness._id,
       });
 
       redis.del("funds");

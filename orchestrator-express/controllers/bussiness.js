@@ -1,17 +1,12 @@
 const axios = require("axios");
-const Redis = require("ioredis");
+const { getRedis } = require("../config/RedisConfig");
 const BUSSINESS_URL = "http://localhost:4002";
 const USER_URL = "http://localhost:4001";
-
-const redis = new Redis({
-  port: 17893,
-  host: "redis-17893.c292.ap-southeast-1-1.ec2.cloud.redislabs.com",
-  password: "gPLuaVrS3WhdiI7uVvK3wHShgLGEB83h",
-});
 
 class bussinessController {
   static async getAll(req, res, next) {
     try {
+      const redis = getRedis();
       const dataCache = await redis.get("bussinesses");
       if (dataCache) {
         const result = JSON.parse(dataCache);
@@ -41,24 +36,16 @@ class bussinessController {
 
   static async post(req, res, next) {
     try {
-      const { data: user } = await axios({
+      const redis = getRedis();
+      const { data: userData } = await axios({
         url: `${USER_URL}/users/profile`,
         method: "GET",
         headers: {
-          token:req.headers.token,
+          token: req.headers.token,
         },
       });
 
-      const {
-        name,
-        overview,
-        brandUrl,
-        imagesUrl,
-        locations,
-        pdfUrl,
-        fundNeeded,
-        locationDetail,
-      } = req.body;
+      const { name, overview, brandUrl, imagesUrl, locations, pdfUrl, fundNeeded, locationDetail } = req.body;
 
       const { data } = await axios.post(`${BUSSINESS_URL}/bussinesses`, {
         name,
@@ -68,7 +55,7 @@ class bussinessController {
         locations,
         pdfUrl,
         fundNeeded,
-        UserId:user.user._id,
+        UserId: userData.user._id,
         locationDetail,
       });
 
