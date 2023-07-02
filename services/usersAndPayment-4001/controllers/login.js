@@ -2,12 +2,12 @@ const User = require("../models/user");
 const { signToken } = require("../helpers/jwt");
 
 class loginController {
-  static async login(req, res) {
+  static async login(req, res, next) {
     try {
-      const { username, email, socialMedia } = req.body;
+      const { username, id, socialMedia } = req.body;
 
       if (!username || typeof username !== "string") {
-        return res.status(400).json({ error: "Invalid or missing username" });
+        throw { statusCode: 400, msg: "Invalid or missing username" };
       }
 
       if (!email || typeof email !== "string" || !email.includes("@")) {
@@ -15,12 +15,10 @@ class loginController {
       }
 
       if (!socialMedia || typeof socialMedia !== "string") {
-        return res
-          .status(400)
-          .json({ error: "Invalid or missing socialMedia" });
+        return res.status(400).json({ error: "Invalid or missing socialMedia" });
       }
 
-      let user = await User.getCollections().findOne({ email });
+      let user = await User.getCollections().findOne({ id });
 
       if (!user) {
         const newUser = await User.create({ username, email, socialMedia });
@@ -50,7 +48,6 @@ class loginController {
         });
       }
     } catch (error) {
-      console.error(error);
       next(error);
     }
   }
