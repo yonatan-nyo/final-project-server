@@ -1,6 +1,6 @@
 require("dotenv").config();
 const { mongoConnect } = require("../config/connectionMongoDB");
-const port = process.env.PORT || 4002;
+const port = process.env.PORT || 4001;
 const app = require("../app");
 
 (async () => {

@@ -1,6 +1,7 @@
 const axios = require("axios");
 const Redis = require("ioredis");
 const BUSSINESS_URL = "http://localhost:4002";
+const USER_URL = "http://localhost:4001";
 
 const redis = new Redis({
   port: 17893,
@@ -9,44 +10,38 @@ const redis = new Redis({
 });
 
 class fundController {
-  static async readAllFunds(req, res, next) {
-    try {
-      const dataCache = await redis.get("funds");
-      if (dataCache) {
-        const result = JSON.parse(dataCache);
-        return res.status(200).json(result);
-      }
-
-      const { data } = await axios.get(`${BUSSINESS_URL}/funds`);
-
-      redis.set("funds", JSON.stringify(data));
-
-      res.status(200).json(data);
-    } catch (err) {
-      console.log(err);
-      res.status(501).json({
-        statusCode: 501,
-      });
-    }
-  }
-
   static async fundSuccess(req, res, next) {
     try {
-      const { amount, PaymentId } = req.body;
+      //find UserID
+      const { data: user } = await axios({
+        url: `${USER_URL}/users/profile`,
+        method: "GET",
+        headers: {
+          token: req.headers.token,
+        },
+      });
 
+      //find BussinessId
+      const { slug } = req.params;
+      const { data: bussiness } = await axios({
+        url: `${BUSSINESS_URL}/bussinesses/${slug}`,
+        method: "GET",
+      });
+
+      //success funding
+      const { amount, PaymentId } = req.body;
       const { data } = await axios.post(`${BUSSINESS_URL}/funds`, {
         amount,
         PaymentId,
+        UserId: user.user._id,
+        BussinessId:bussiness._id,
       });
 
       redis.del("funds");
 
       res.status(201).json(data);
     } catch (err) {
-      console.log(err);
-      res.status(501).json({
-        statusCode: 501,
-      });
+      next(err);
     }
   }
 }

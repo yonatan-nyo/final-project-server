@@ -21,7 +21,8 @@ class fundController {
 
       let parameter = {
         transaction_details: {
-          order_id: "TRANSACTION_" + Math.floor(1000000 + Math.random() * 9000000), //harus unique
+          order_id:
+            "TRANSACTION_" + Math.floor(1000000 + Math.random() * 9000000), //harus unique
           gross_amount: amount,
         },
         credit_card: {
@@ -48,18 +49,7 @@ class fundController {
 
   static async fundSuccess(req, res, next) {
     try {
-      const { amount, PaymentId } = req.body;
-      // const { UserId } = req.headers;
-      // Hardcode
-      const BussinessId = "649fce217acc46cb08dc04e5"; //ambil dari req.body client
-      const UserId = "649c1fb2e097160432a50318"; //based yg login
-      console.log("🚀 ~ file: funds.js:77 ~ fundController ~ fundSuccess ~ BussinessId:", BussinessId);
-      console.log("🚀 ~ file: funds.js:78 ~ fundController ~ fundSuccess ~ UserId:", UserId);
-
-      const findBusiness = await Bussiness.findById({
-        _id: new ObjectId(`${BussinessId}`),
-      });
-      console.log("🚀 ~ file: funds.js:88 ~ fundController ~ fundSuccess ~ findBusiness:", findBusiness);
+      const { amount, PaymentId, BussinessId, UserId } = req.body;
 
       await Fund.createFund({
         PaymentId,
@@ -68,11 +58,9 @@ class fundController {
         BussinessId,
       });
 
-      const addReceivedFund = await Bussiness.fundingSuccess({
-        amount,
-        BussinessId,
-      });
-      console.log("🚀 ~ file: funds.js:94 ~ fundController ~ fundSuccess ~ addReceivedFund:", addReceivedFund);
+      // await Bussiness.addFundReceived({
+      //   //ketika payment fund succes maka amount nya akan di tambahkan/push ke fundReceived Bussines
+      // })
 
       res.status(201).json("Payment Success");
     } catch (err) {

@@ -1,6 +1,7 @@
 const axios = require("axios");
 const Redis = require("ioredis");
 const BUSSINESS_URL = "http://localhost:4002";
+const USER_URL = "http://localhost:4001";
 
 const redis = new Redis({
   port: 17893,
@@ -23,10 +24,7 @@ class bussinessController {
 
       res.status(200).json(data);
     } catch (err) {
-      console.log(err);
-      res.status(501).json({
-        statusCode: 501,
-      });
+      next(err);
     }
   }
 
@@ -37,22 +35,19 @@ class bussinessController {
 
       res.status(200).json(data);
     } catch (err) {
-      console.log(err);
-      res.status(501).json({
-        statusCode: 501,
-      });
+      next(err);
     }
   }
 
   static async post(req, res, next) {
     try {
-      const {data: user} = await axios({
+      const { data: user } = await axios({
         url: `${USER_URL}/users/profile`,
         method: "GET",
-        headers: req.headers,
+        headers: {
+          token:req.headers.token,
+        },
       });
-      console.log("🚀 ~ file: bussiness.js:54 ~ bussinessController ~ post ~ user:", user)
-
 
       const {
         name,
@@ -62,7 +57,7 @@ class bussinessController {
         locations,
         pdfUrl,
         fundNeeded,
-        
+        locationDetail,
       } = req.body;
 
       const { data } = await axios.post(`${BUSSINESS_URL}/bussinesses`, {
@@ -73,17 +68,15 @@ class bussinessController {
         locations,
         pdfUrl,
         fundNeeded,
-        UserId:user.id
+        UserId:user.user._id,
+        locationDetail,
       });
 
       redis.del("bussinesses");
 
       res.status(201).json(data);
     } catch (err) {
-      console.log(err);
-      res.status(501).json({
-        statusCode: 501,
-      });
+      next(err);
     }
   }
 }

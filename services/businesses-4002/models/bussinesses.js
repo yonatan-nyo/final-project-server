@@ -29,7 +29,7 @@ class Bussiness {
     UserId,
     locationDetail,
   }) {
-    if(this.findBySlug(slug)) throw {msg:'Name taken',statusCode:400}
+    // if(this.findBySlug(slug)) throw {msg:'Name taken',statusCode:400}
     return this.getCollections().insertOne({
       name,
       slug,

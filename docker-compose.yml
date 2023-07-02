@@ -1,0 +1,28 @@
+services:
+  bussiness-service:
+    build: ./services/businesses-4002
+    container_name: bussiness-service
+    ports:
+      - "4002:4002"
+    environment:
+      - DATABASE_URL=${SUPABASE_URL}
+      - NODE_ENV=production
+
+  usersAndPayment-service:
+    build: ./services/usersAndPayment-4001
+    container_name: usersAndPayment-service
+    ports:
+      - "4001:4001"
+    environment:
+      - NODE_ENV=production
+      - MONGODB=${MONGODB}
+
+  orchestrator:
+    build: ./orchestrator-express
+    container_name: orchestrator
+    ports:
+      - "80:4000"
+    environment:
+      - REDIS_URL=${REDIS_URL}
+      - BUSSINESS_URL_URL=${BUSSINESS_URL_URL}
+      - USER_URL=${USER_URL}

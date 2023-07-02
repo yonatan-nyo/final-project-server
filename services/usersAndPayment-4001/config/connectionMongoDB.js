@@ -5,7 +5,7 @@ const client = new MongoClient(connectionString);
 
 let db = null;
 
-const mongoConnect = async (database = "Business") => {
+const mongoConnect = async (database = "usersAndPayment") => {
   await client.connect();
   db = client.db(database);
   return database;

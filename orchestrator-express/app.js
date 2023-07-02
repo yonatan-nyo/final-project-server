@@ -6,6 +6,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const port = process.env.PORT || 4000;
+const ErrorHandler = require("./middlewares/ErrorHandler");
 
 const bussinessRouter = require("./router/bussiness");
 const fundRouter = require("./router/fund");
@@ -24,6 +25,8 @@ app.use("/login", loginRouter);
 
 app.use("/users", usersRouter);
 app.use("/payments", paymentRouter);
+
+app.use(ErrorHandler);
 
 app.listen(port, () => {
   console.log(`Orchestrator-express listening on port ${port}`);
