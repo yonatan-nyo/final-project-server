@@ -4,6 +4,7 @@ const express = require("express");
 const bussinessRouter = require("./routers/bussiness");
 const fundRouter = require("./routers/fund");
 const ErrorHandler = require("./midlewares/ErrorHandler");
+const fileUpload = require("express-fileupload");
 const app = express();
 
 app.use(

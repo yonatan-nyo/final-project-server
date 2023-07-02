@@ -30,8 +30,8 @@ class Bussiness {
     UserId,
     locationDetail,
   }) {
-    const findSlug = await this.findBySlug(slug)
-    if(slug === findSlug?.slug) throw {msg:'Name taken',statusCode:400}
+    const findSlug = await this.findBySlug(slug);
+    if (slug === findSlug?.slug) throw { msg: "Name taken", statusCode: 400 };
     return this.getCollections().insertOne({
       name,
       slug,
@@ -49,14 +49,21 @@ class Bussiness {
 
   static async findOne(id) {
     return this.getCollections().findOne({
-      _id:new ObjectId(id._id),
+      _id: new ObjectId(id._id),
     });
   }
 
+  static async findByUserId(UserId) {
+    return this.getCollections().find({ UserId }).toArray();
+  }
+
   static async addFundReceived(input) {
-    const bussiness = await this.findOne({ _id: input.BussinessId })
-    const findId = bussiness._id
-    return this.getCollections().updateOne({_id:findId},{$push:{fundReceived:input.amount}});
+    const bussiness = await this.findOne({ _id: input.BussinessId });
+    const findId = bussiness._id;
+    return this.getCollections().updateOne(
+      { _id: findId },
+      { $push: { fundReceived: input.amount } }
+    );
   }
 }
 

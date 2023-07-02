@@ -50,20 +50,32 @@ class fundController {
   static async fundSuccess(req, res, next) {
     try {
       const { amount, PaymentId, BussinessId, UserId } = req.body;
-      
+
       await Fund.createFund({
         PaymentId,
         amount: +amount,
         UserId,
         BussinessId,
       });
-      
-      await Bussiness.findOne({ _id:BussinessId  });
+
+      await Bussiness.findOne({ _id: BussinessId });
       await Bussiness.addFundReceived({
         BussinessId,
-        amount:+amount
-      })
+        amount: +amount,
+      });
       res.status(201).json("Payment Success");
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  static async getByUserId(req, res, next) {
+    try {
+      const { UserId } = req.params;
+      const data = await Fund.findByUserId(UserId);
+      if (!data) throw { msg: "Funds not found", statusCode: 404 };
+
+      res.status(200).json(data);
     } catch (err) {
       next(err);
     }

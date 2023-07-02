@@ -6,7 +6,9 @@ class loginController {
     try {
       const { username, id, socialMedia } = req.body;
 
-      if (!id || (id.length !== 24 && id.length !== 12) || !socialMedia) throw { statusCode: 400, msg: "Invalid credentials" };
+      if (!id || id.length !== 24 || !socialMedia)
+        throw { statusCode: 400, msg: "Invalid credentials" };
+
       let user = await User.getById(id);
 
       if (!user) {

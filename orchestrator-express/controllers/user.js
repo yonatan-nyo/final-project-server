@@ -1,24 +1,47 @@
 // userController.js
 const axios = require("axios");
 const USER_URL = "http://localhost:4001";
+const BUSINESS_AND_FUND_URL = "http://localhost:4002";
 
 class userController {
   static async getUser(req, res) {
     try {
-      const response = await axios({
+      const userProfileResponse = await axios({
         url: `${USER_URL}/users/profile`,
         method: "GET",
-        headers: req.headers,
+        headers: {
+          token: req.headers.token,
+        },
       });
 
-      res.status(response.status).json(response.data);
+      const UserId = userProfileResponse.data.user._id;
+
+      const userBusinessesResponse = await axios({
+        url: `${BUSINESS_AND_FUND_URL}/bussinesses/byUser/${UserId}`,
+        method: "GET",
+      });
+
+      const userFundsResponse = await axios({
+        url: `${BUSINESS_AND_FUND_URL}/funds/byUser/${UserId}`,
+        method: "GET",
+      });
+
+      const combinedResponseData = {
+        userProfile: userProfileResponse.data,
+        userBusinesses: userBusinessesResponse.data,
+        userFunds: userFundsResponse.data,
+      };
+
+      res.status(200).json(combinedResponseData);
     } catch (error) {
       console.error(error);
 
       if (error.response) {
         res.status(error.response.status).json(error.response.data);
       } else {
-        res.status(500).json({ error: "An error occurred while processing your request" });
+        res
+          .status(500)
+          .json({ error: "An error occurred while processing your request" });
       }
     }
   }
@@ -46,7 +69,9 @@ class userController {
       if (error.response) {
         res.status(error.response.status).json(error.response.data);
       } else {
-        res.status(500).json({ error: "An error occurred while processing your request" });
+        res
+          .status(500)
+          .json({ error: "An error occurred while processing your request" });
       }
     }
   }
