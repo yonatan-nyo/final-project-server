@@ -13,6 +13,7 @@ const fundRouter = require("./router/fund");
 const usersRouter = require("./router/user");
 const paymentRouter = require("./router/payment");
 const loginRouter = require("./router/login");
+const { InitializeRedis } = require("./config/redisConfig");
 
 //middleware
 app.use(cors());
@@ -28,8 +29,15 @@ app.use("/payments", paymentRouter);
 
 app.use(ErrorHandler);
 
-app.listen(port, () => {
-  console.log(`Orchestrator-express listening on port ${port}`);
-});
+() => {
+  try {
+    InitializeRedis();
+    app.listen(port, () => {
+      console.log(`Orchestrator-express listening on port ${port}`);
+    });
+  } catch (error) {
+    console.log("Failed initialize redis");
+  }
+};
 
 // module.exports = app
