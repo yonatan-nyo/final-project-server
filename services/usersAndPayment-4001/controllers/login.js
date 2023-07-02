@@ -10,18 +10,20 @@ class loginController {
         throw { statusCode: 400, msg: "Invalid or missing username" };
       }
 
-      if (!email || typeof email !== "string" || !email.includes("@")) {
-        return res.status(400).json({ error: "Invalid or missing email" });
-      }
+      // if (!email || typeof email !== "string" || !email.includes("@")) {
+      //   return res.status(400).json({ error: "Invalid or missing email" });
+      // }
 
       if (!socialMedia || typeof socialMedia !== "string") {
-        return res.status(400).json({ error: "Invalid or missing socialMedia" });
+        return res
+          .status(400)
+          .json({ error: "Invalid or missing socialMedia" });
       }
 
-      let user = await User.getCollections().findOne({ id });
+      let user = await User.getById(id);
 
       if (!user) {
-        const newUser = await User.create({ username, email, socialMedia });
+        const newUser = await User.create({ username, id, socialMedia });
 
         const token = signToken({
           id: newUser._id,

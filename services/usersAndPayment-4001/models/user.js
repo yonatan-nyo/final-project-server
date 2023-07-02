@@ -17,10 +17,10 @@ class User {
     return this.getCollections().findOne({ _id: new ObjectId(id) });
   }
 
-  static async create({ username, email, socialMedia }) {
+  static async create({ username, id, socialMedia }) {
     const result = await this.getCollections().insertOne({
+      _id: new ObjectId(id),
       username,
-      email,
       socialMedia,
     });
 

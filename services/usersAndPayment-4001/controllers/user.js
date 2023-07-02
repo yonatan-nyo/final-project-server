@@ -22,7 +22,7 @@ class userController {
 
   static async readProfile(req, res, next) {
     try {
-      if (!req.user || !req.user._id) {
+      if (!req.user._id) {
         return res.status(400).json({
           message: `Invalid request. User not authenticated.`,
         });
