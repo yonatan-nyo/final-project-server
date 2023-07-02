@@ -1,5 +1,4 @@
 const { verifyToken } = require("../helpers/jwt");
-const { ObjectId } = require("mongodb");
 const User = require("../models/user");
 
 const authentication = async (req, res, next) => {
@@ -8,7 +7,7 @@ const authentication = async (req, res, next) => {
     if (!token) throw { statusCode: 401, msg: "No token Provided" };
 
     const payload = verifyToken(token);
-    const user = await User.getById(new ObjectId(payload.id));
+    const user = await User.getById(payload.id);
 
     if (!user) throw { statusCode: 401, msg: "User not found" };
 

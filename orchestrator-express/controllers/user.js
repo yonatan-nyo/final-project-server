@@ -8,7 +8,9 @@ class userController {
       const response = await axios({
         url: `${USER_URL}/users/profile`,
         method: "GET",
-        headers: req.headers,
+        headers: {
+          token: req.headers.token,
+        },
       });
 
       res.status(response.status).json(response.data);

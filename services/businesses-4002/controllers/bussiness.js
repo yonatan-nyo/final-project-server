@@ -22,9 +22,9 @@ class bussinessController {
 
   static async post(req, res, next) {
     try {
-      const { name, overview, brandUrl, imagesUrl, locations, pdfUrl, fundNeeded,UserId, locationDetail} = req.body;
-      console.log("🚀 ~ file: bussiness.js:26 ~ bussinessController ~ post ~ UserId:", UserId)
-      if (!name || !overview || !brandUrl || !imagesUrl || !locations || !pdfUrl || !fundNeeded || !UserId || !locationDetail ) {
+      const { name, overview, brandUrl, imagesUrl, locations, pdfUrl, fundNeeded, UserId, locationDetail } = req.body;
+      console.log({ name, overview, brandUrl, imagesUrl, locations, pdfUrl, fundNeeded, UserId, locationDetail });
+      if (!name || !overview || !brandUrl || !imagesUrl || !locations || !pdfUrl || !fundNeeded || !UserId || !locationDetail) {
         throw { msg: "Please fill all fields", statusCode: 400 };
       }
       const slug = convertToSlug(name);
@@ -35,10 +35,10 @@ class bussinessController {
         overview,
         brandUrl,
         imagesUrl,
-        locations,
+        locations: locations.split(","),
         pdfUrl,
         fundNeeded,
-        UserId, 
+        UserId,
         locationDetail,
       });
 

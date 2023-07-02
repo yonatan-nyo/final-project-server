@@ -2,6 +2,9 @@ const axios = require("axios");
 const { getRedis } = require("../config/redisConfig");
 const BUSSINESS_URL = "http://localhost:4002";
 const USER_URL = "http://localhost:4001";
+const { uuid } = require("uuidv4");
+const { admin } = require("../config/admin");
+const UploadFirebase = require("../helpers/uploadFirebase");
 
 class bussinessController {
   static async getAll(req, res, next) {
@@ -45,7 +48,10 @@ class bussinessController {
         },
       });
 
-      const { name, overview, brandUrl, imagesUrl, locations, pdfUrl, fundNeeded, locationDetail } = req.body;
+      const { name, overview, locations, fundNeeded, locationDetail } = req.body;
+      const imagesUrl = await UploadFirebase(req.files.image);
+      const brandUrl = await UploadFirebase(req.files.logo);
+      const pdfUrl = await UploadFirebase(req.files.pdf);
 
       const { data } = await axios.post(`${BUSSINESS_URL}/bussinesses`, {
         name,
