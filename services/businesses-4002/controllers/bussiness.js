@@ -35,10 +35,10 @@ class bussinessController {
         overview,
         brandUrl,
         imagesUrl,
-        locations,
+        locations: locations.split(","),
         pdfUrl,
         fundNeeded,
-        UserId, 
+        UserId,
         locationDetail,
       });
 
