@@ -2,7 +2,7 @@ const axios = require("axios");
 const USER_URL = "http://localhost:4001";
 
 class loginController {
-  static async login(req, res) {
+  static async login(req, res, next) {
     try {
       const { username, id, socialMedia } = req.body;
 

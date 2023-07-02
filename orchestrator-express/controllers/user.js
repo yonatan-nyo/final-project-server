@@ -5,7 +5,6 @@ const USER_URL = "http://localhost:4001";
 class userController {
   static async getUser(req, res) {
     try {
-      // console.log(req.headers);
       const response = await axios({
         url: `${USER_URL}/users/profile`,
         method: "GET",

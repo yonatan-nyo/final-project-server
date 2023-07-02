@@ -1,5 +1,5 @@
 function ErrorHandler(err, req, res, next) {
-  // console.log(err);
-  res.status(err?.response.status).json(err?.response.data);
+  console.log(err);
+  res.status(err?.response?.status || 500).json(err?.response?.data || "Internal Server Error");
 }
 module.exports = ErrorHandler;

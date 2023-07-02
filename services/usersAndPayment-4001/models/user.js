@@ -1,4 +1,3 @@
-const { ObjectId } = require("mongodb");
 const { getDatabase } = require("../config/connectionMongoDB");
 
 class User {
@@ -9,12 +8,12 @@ class User {
   }
 
   static async getById(id) {
-    return this.getCollections().findOne({ _id: new ObjectId(id) });
+    return this.getCollections().findOne({ _id: id });
   }
 
   static async create({ username, id, socialMedia }) {
     const result = await this.getCollections().insertOne({
-      _id: new ObjectId(id),
+      _id: id,
       username,
       socialMedia,
     });
@@ -27,7 +26,7 @@ class User {
 
   static async edit(id, username) {
     const updatedUser = await this.getCollections().findOneAndUpdate(
-      { _id: new ObjectId(id) },
+      { _id: id },
       { $set: { username: username } },
       { returnOriginal: false }
     );
