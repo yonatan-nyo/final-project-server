@@ -2,8 +2,6 @@ const axios = require("axios");
 const { getRedis } = require("../config/redisConfig");
 const BUSSINESS_URL = "http://localhost:4002";
 const USER_URL = "http://localhost:4001";
-const { uuid } = require("uuidv4");
-const { admin } = require("../config/admin");
 const UploadFirebase = require("../helpers/uploadFirebase");
 
 class bussinessController {
