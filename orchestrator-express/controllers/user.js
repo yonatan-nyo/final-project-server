@@ -20,11 +20,13 @@ class userController {
         url: `${BUSINESS_URL}/bussinesses/byUser/${UserId}`,
         method: "GET",
       });
+      // console.log("🚀 ~ file: user.js:24 ~ userController ~ getUser ~ userBusinessesResponse:", userBusinessesResponse)
 
       const userFundsResponse = await axios({
-        url: `${BUSINESS_URL}/funds/byUser/${UserId}`,
+        url: `${USER_URL}/payments/byUser/${UserId}`,
         method: "GET",
       });
+      console.log("🚀 ~ file: user.js:28 ~ userController ~ getUser ~ userFundsResponse:", userFundsResponse)
 
       const combinedResponseData = {
         userProfile: userProfileResponse.data,

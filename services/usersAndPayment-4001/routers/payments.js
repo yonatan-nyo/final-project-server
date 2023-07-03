@@ -13,6 +13,7 @@ routerPayment.post(
   authentication,
   paymentController.successPayment
 );
+routerPayment.get("/byUser/:UserId", paymentController.getByUserId);
 // routerPayment.post('/checkout-session'.paymentController.checkoutStripe)
 // routerPayment.post("/", authentication, paymentController.createPayment);
 // routerPayment.get("/", authentication, paymentController.getAllPayments);

@@ -77,7 +77,9 @@ class fundController {
   static async getByUserId(req, res, next) {
     try {
       const { UserId } = req.params;
+      console.log("🚀 ~ file: funds.js:80 ~ fundController ~ getByUserId ~ UserId:", UserId)
       const data = await Fund.findByUserId(UserId);
+      console.log("🚀 ~ file: funds.js:82 ~ fundController ~ getByUserId ~ data:", data)
       if (!data) throw { msg: "Funds not found", statusCode: 404 };
 
       res.status(200).json(data);

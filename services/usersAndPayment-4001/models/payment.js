@@ -17,14 +17,16 @@ class Payment {
   }
 
   static async findByUserId(userId) {
+    console.log("🚀 ~ file: payment.js:20 ~ Payment ~ findByUserId ~ userId:", userId)
     return this.getCollections().find({ UserId: userId }).toArray();
   }
 
-  static async create({ amount, UserId, BussinessId }) {
+  static async create({ amount, UserId, BussinessId,bussinessName }) {
     const result = await this.getCollections().insertOne({
       amount,
       UserId,
       BussinessId,
+      bussinessName
     });
 
     return {
@@ -32,6 +34,7 @@ class Payment {
       amount,
       UserId,
       BussinessId,
+      bussinessName
     };
   }
 

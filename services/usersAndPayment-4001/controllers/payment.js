@@ -30,8 +30,8 @@ class paymentController {
 
   static async successPayment(req, res, next) {
     try {
-      const { amount, UserId, BussinessId } = req.body;
-      await Payment.create({ amount, UserId, BussinessId });
+      const { amount, UserId, BussinessId,bussinessName } = req.body;
+      await Payment.create({ amount, UserId, BussinessId,bussinessName });
 
       res.status(201).json("Payment succeed");
     } catch (err) {
@@ -39,96 +39,18 @@ class paymentController {
     }
   }
 
-  static async checkoutStripe(req, res, next) {
+  static async getByUserId(req, res, next) {
     try {
-      const session = await Stripe.checkout.session;
+      const { UserId } = req.params;
+      const data = await Payment.findByUserId(UserId);
+      if (!data) throw { msg: "Funds not found", statusCode: 404 };
+
+      res.status(200).json(data);
     } catch (err) {
       next(err);
     }
   }
 
-  // static async getAllPayments(req, res, next) {
-  //   try {
-  //     const UserId = req.user._id;
-
-  //     if (!UserId || typeof UserId !== "string" || UserId.trim() === "") {
-  //       return res.status(400).json({
-  //         message: `Invalid or missing UserId`,
-  //       });
-  //     }
-
-  //     const payments = await Payment.findByUserId(UserId);
-
-  //     if (payments.length === 0) {
-  //       return res.status(404).json({
-  //         message: "No payments found for this user",
-  //       });
-  //     }
-
-  //     res.status(200).json({
-  //       message: "Fetched all payments successfully",
-  //       payments,
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //     next(error);
-  //   }
-  // }
-
-  // static async getPaymentById(req, res, next) {
-  //   try {
-  //     const { id } = req.params;
-
-  //     if (!id || typeof id !== "string" || id.trim() === "") {
-  //       return res.status(400).json({
-  //         message: `Invalid or missing payment ID`,
-  //       });
-  //     }
-
-  //     const payment = await Payment.findById(id);
-
-  //     if (!payment) {
-  //       return res.status(404).json({
-  //         message: "Payment not found",
-  //       });
-  //     }
-
-  //     res.status(200).json({
-  //       message: `Fetched payment with ID: ${id} successfully`,
-  //       payment,
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //     next(error);
-  //   }
-  // }
-
-  // static async deletePayment(req, res, next) {
-  //   try {
-  //     const { id } = req.params;
-
-  //     if (!id || typeof id !== "string" || id.trim() === "") {
-  //       return res.status(400).json({
-  //         message: `Invalid or missing payment ID`,
-  //       });
-  //     }
-
-  //     const result = await Payment.delete(id);
-
-  //     if (!result) {
-  //       return res.status(404).json({
-  //         message: `No payment found with ID: ${id}`,
-  //       });
-  //     }
-
-  //     res.status(200).json({
-  //       message: `Payment with ID: ${id} deleted successfully`,
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //     next(error);
-  //   }
-  // }
 }
 
 module.exports = paymentController;

@@ -66,7 +66,7 @@ class PaymentController {
         url: `${BUSSINESS_URL}/bussinesses/find/` + BussinessId,
         method: "GET",
       });
-      
+      console.log(bussinessName, "name anjay ");
 
       //add payment to user
       await axios({

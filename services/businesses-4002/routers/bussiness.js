@@ -8,6 +8,5 @@ bussinessRouter.get("/:slug", bussinessController.getBySlug);
 bussinessRouter.post("/", bussinessController.post);
 bussinessRouter.patch("/fund", bussinessController.patchFunds);
 bussinessRouter.get("/byUser/:UserId", bussinessController.getByUserId);
-// bussinessRouter.post('/midtrans',bussinessController.midtrans)
 
 module.exports = bussinessRouter;
