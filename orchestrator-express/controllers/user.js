@@ -1,7 +1,7 @@
 // userController.js
 const axios = require("axios");
 const USER_URL = "http://localhost:4001";
-const BUSINESS_AND_FUND_URL = "http://localhost:4002";
+const BUSINESS_URL = "http://localhost:4002";
 
 class userController {
   static async getUser(req, res) {
@@ -17,12 +17,12 @@ class userController {
       const UserId = userProfileResponse.data.user._id;
 
       const userBusinessesResponse = await axios({
-        url: `${BUSINESS_AND_FUND_URL}/bussinesses/byUser/${UserId}`,
+        url: `${BUSINESS_URL}/bussinesses/byUser/${UserId}`,
         method: "GET",
       });
 
       const userFundsResponse = await axios({
-        url: `${BUSINESS_AND_FUND_URL}/funds/byUser/${UserId}`,
+        url: `${BUSINESS_URL}/funds/byUser/${UserId}`,
         method: "GET",
       });
 

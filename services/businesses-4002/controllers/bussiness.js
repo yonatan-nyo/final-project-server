@@ -33,6 +33,23 @@ class bussinessController {
     }
   }
 
+  static async getById(req, res, next) {
+    try {
+      const { BussinessId } = req.params;
+      console.log(
+        "🚀 ~ file: bussiness.js:39 ~ bussinessController ~ getById ~ BussinessId:",
+        BussinessId
+      );
+      const data = await Bussiness.findOne(BussinessId);
+      console.log(99999999, data, "data cok");
+      if (!data) throw { msg: "Business not found", statusCode: 404 };
+
+      res.status(200).json(data);
+    } catch (err) {
+      next(err);
+    }
+  }
+
   static async post(req, res, next) {
     try {
       const {
@@ -76,6 +93,17 @@ class bussinessController {
 
       res.status(201).json(`Business ${name} is created!`);
     } catch (err) {
+      next(err);
+    }
+  }
+  static async patchFunds(req, res, next) {
+    try {
+      const { amount, UserId, BussinessId } = req.body;
+
+      await Bussiness.addFundReceived({ amount, UserId, BussinessId });
+
+      res.status(201).json(`Succeed add amount!`);
+    } catch (error) {
       next(err);
     }
   }

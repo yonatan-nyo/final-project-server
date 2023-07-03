@@ -3,9 +3,7 @@ const PaymentController = require("../controllers/payment");
 
 const paymentRouter = express.Router();
 
-paymentRouter.get("/:id", PaymentController.getPayment);
-paymentRouter.get("/", PaymentController.getUserPayments);
-paymentRouter.post("/", PaymentController.createPayment);
-paymentRouter.delete("/:id", PaymentController.deletePayment);
+paymentRouter.post("/init", PaymentController.initializeStripe);
+paymentRouter.post("/success", PaymentController.paymentSuccess);
 
 module.exports = paymentRouter;

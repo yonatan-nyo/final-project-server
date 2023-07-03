@@ -6,6 +6,7 @@ const USER_URL = "http://localhost:4001";
 class fundController {
   static async fundSuccess(req, res, next) {
     try {
+      console.log('masuk siniiiiiii');
       //find UserID
       const redis = getRedis();
       const { data: user } = await axios({
@@ -27,12 +28,12 @@ class fundController {
       const { amount, PaymentId } = req.body;
       const { data } = await axios.post(`${BUSSINESS_URL}/funds`, {
         amount,
-        PaymentId,
+        // PaymentId,
         UserId: user.user._id,
         BussinessId: bussiness._id,
       });
 
-      redis.del("funds");
+      redis.del("bussinesses");
 
       res.status(201).json(data);
     } catch (err) {

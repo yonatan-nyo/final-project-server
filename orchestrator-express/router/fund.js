@@ -6,4 +6,6 @@ const fundController = require('../controllers/funds')
 // fundRouter.post("/midtrans", fundController.createPaymentMidtrans);
 fundRouter.post("/:slug", fundController.fundSuccess);
 
+
+
 module.exports = fundRouter;

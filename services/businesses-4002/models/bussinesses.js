@@ -48,8 +48,9 @@ class Bussiness {
   }
 
   static async findOne(id) {
+    console.log("🚀 ~ file: bussinesses.js:51 ~ Bussiness ~ findOne ~ id:=====", id)
     return this.getCollections().findOne({
-      _id: new ObjectId(id._id),
+      _id: new ObjectId(id),
     });
   }
 
@@ -57,12 +58,14 @@ class Bussiness {
     return this.getCollections().find({ UserId }).toArray();
   }
 
-  static async addFundReceived(input) {
-    const bussiness = await this.findOne({ _id: input.BussinessId });
-    const findId = bussiness._id;
+  static async addFundReceived({ amount, UserId, BussinessId }) {
+    console.log(
+      { _id: new ObjectId(BussinessId) },
+      { $push: { fundReceived: { amount, UserId, BussinessId } } }
+    );
     return this.getCollections().updateOne(
-      { _id: findId },
-      { $push: { fundReceived: input.amount } }
+      { _id: new ObjectId(BussinessId) },
+      { $push: { fundReceived: { amount, UserId, BussinessId } } }
     );
   }
 }

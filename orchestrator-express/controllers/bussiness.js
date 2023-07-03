@@ -24,6 +24,17 @@ class bussinessController {
     }
   }
 
+  static async getById(req, res, next) {
+    try {
+      const { BussinessId } = req.params;
+      const { data } = await axios.get(`${BUSSINESS_URL}/bussinesses/find/` + BussinessId);
+
+      res.status(200).json(data);
+    } catch (err) {
+      next(err);
+    }
+  }
+
   static async getBySlug(req, res, next) {
     try {
       const { slug } = req.params;

@@ -20,23 +20,19 @@ class Payment {
     return this.getCollections().find({ UserId: userId }).toArray();
   }
 
-  static async create({ amount, UserId, BusinessId }) {
+  static async create({ amount, UserId, BussinessId }) {
     const result = await this.getCollections().insertOne({
       amount,
       UserId,
-      BusinessId,
+      BussinessId,
     });
 
-    if (result && result.acknowledged) {
-      return {
-        _id: result.insertedId,
-        amount,
-        UserId,
-        BusinessId,
-      };
-    } else {
-      throw new Error("Failed to create payment");
-    }
+    return {
+      _id: result.insertedId,
+      amount,
+      UserId,
+      BussinessId,
+    };
   }
 
   static async delete(id) {
