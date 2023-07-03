@@ -12,8 +12,7 @@ class bussinessController {
     try {
       const { UserId } = req.params;
       const data = await Bussiness.findByUserId(UserId);
-      if (!data)
-        throw { msg: "No business found for this user", statusCode: 404 };
+      if (!data) throw { msg: "No business found for this user", statusCode: 404 };
 
       res.status(200).json(data);
     } catch (err) {
@@ -36,10 +35,7 @@ class bussinessController {
   static async getById(req, res, next) {
     try {
       const { BussinessId } = req.params;
-      console.log(
-        "🚀 ~ file: bussiness.js:39 ~ bussinessController ~ getById ~ BussinessId:",
-        BussinessId
-      );
+      console.log("🚀 ~ file: bussiness.js:39 ~ bussinessController ~ getById ~ BussinessId:", BussinessId);
       const data = await Bussiness.findOne(BussinessId);
       console.log(99999999, data, "data cok");
       if (!data) throw { msg: "Business not found", statusCode: 404 };
@@ -52,28 +48,8 @@ class bussinessController {
 
   static async post(req, res, next) {
     try {
-      const {
-        name,
-        overview,
-        brandUrl,
-        imagesUrl,
-        locations,
-        pdfUrl,
-        fundNeeded,
-        UserId,
-        locationDetail,
-      } = req.body;
-      if (
-        !name ||
-        !overview ||
-        !brandUrl ||
-        !imagesUrl ||
-        !locations ||
-        !pdfUrl ||
-        !fundNeeded ||
-        !UserId ||
-        !locationDetail
-      ) {
+      const { name, overview, brandUrl, imagesUrl, locations, pdfUrl, fundNeeded, UserId, locationDetail } = req.body;
+      if (!name || !overview || !brandUrl || !imagesUrl || !locations || !pdfUrl || !fundNeeded || !UserId || !locationDetail) {
         throw { msg: "Please fill all fields", statusCode: 400 };
       }
       const slug = convertToSlug(name);
@@ -96,6 +72,7 @@ class bussinessController {
       next(err);
     }
   }
+
   static async patchFunds(req, res, next) {
     try {
       const { amount, UserId, BussinessId } = req.body;

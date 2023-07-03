@@ -4,6 +4,5 @@ const userController = require("../controllers/user");
 const authentication = require("../midleware/Auth");
 
 userRouter.get("/profile", authentication, userController.readProfile);
-userRouter.patch("/profile", authentication, userController.editUsername);
 
 module.exports = userRouter;
