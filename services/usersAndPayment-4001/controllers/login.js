@@ -4,10 +4,9 @@ const { signToken } = require("../helpers/jwt");
 class loginController {
   static async login(req, res, next) {
     try {
-      const { username, id, socialMedia } = req.body;
+      const { username, id = [], socialMedia } = req.body;
 
-      if (!id || id.length !== 28 || !socialMedia)
-        throw { statusCode: 400, msg: "Invalid credentials" };
+      if (id.length !== 28 || !socialMedia) throw { statusCode: 400, msg: "Invalid credentials" };
 
       let user = await User.getById(id);
 

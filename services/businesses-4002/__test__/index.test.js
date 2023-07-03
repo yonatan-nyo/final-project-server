@@ -11,10 +11,7 @@ const baseBusinessInput = {
   overview: "testOverview",
   brandUrl: "https://testBranchUrl.jpg",
   imagesUrl: "https://testImagesUrl.jpg",
-  locations: {
-    lat: 2.1,
-    lng: 3.2,
-  },
+  locations: "2.1,3.2",
   locationDetail: "Jl. wiwakwkwk, Jakarta, Indonesia",
   pdfUrl: "https://testPdfYrl.jpg",
   fundNeeded: 900899923,

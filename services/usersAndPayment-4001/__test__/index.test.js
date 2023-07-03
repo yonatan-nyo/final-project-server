@@ -22,7 +22,7 @@ describe("Users", () => {
   describe("POST /login", () => {
     const testUserData = {
       username: "NewTestUser",
-      id: "64a011c13a704fb326aa4372",
+      id: "64a011c13a704fb326aa4372uhgy",
       socialMedia: "NewTestSocialMedia",
     };
 
@@ -93,7 +93,7 @@ describe("Users", () => {
 
     expect(response.status).toBe(200);
     expect(response.body.message).toBe(
-      "Successfully updated username of ID: 64a011c13a704fb326aa4372 from NewTestUser to NewTestUsera"
+      "Successfully updated username of ID: 64a011c13a704fb326aa4372uhgy from NewTestUser to NewTestUsera"
     );
   });
 
