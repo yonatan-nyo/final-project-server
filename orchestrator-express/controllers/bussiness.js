@@ -9,6 +9,7 @@ class bussinessController {
     try {
       const redis = getRedis();
       const dataCache = await redis.get("bussinesses");
+
       if (dataCache) {
         const result = JSON.parse(dataCache);
         return res.status(200).json(result);
@@ -46,7 +47,8 @@ class bussinessController {
         },
       });
 
-      const { name, overview, locations, fundNeeded, locationDetail } = req.body;
+      const { name, overview, locations, fundNeeded, locationDetail } =
+        req.body;
       const imagesUrl = await UploadFirebase(req.files.image);
       const brandUrl = await UploadFirebase(req.files.logo);
       const pdfUrl = await UploadFirebase(req.files.pdf);
@@ -63,7 +65,8 @@ class bussinessController {
         locationDetail,
       });
 
-      redis.del("bussinesses");
+      const dataCache = await redis.get("bussinesses");
+      if (dataCache) redis.del("bussinesses");
 
       res.status(201).json(data);
     } catch (err) {
