@@ -9,7 +9,6 @@ const port = process.env.PORT || 4000;
 const ErrorHandler = require("./middlewares/ErrorHandler");
 
 const bussinessRouter = require("./router/bussiness");
-const fundRouter = require("./router/fund");
 const usersRouter = require("./router/user");
 const paymentRouter = require("./router/payment");
 const loginRouter = require("./router/login");
@@ -31,7 +30,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 app.use("/bussinesses", bussinessRouter);
-app.use("/funds", fundRouter);
 app.use("/login", loginRouter);
 
 app.use("/users", usersRouter);
