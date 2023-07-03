@@ -22,6 +22,7 @@ class paymentController {
         BussinessId,
         UserId,
         amount,
+        paymentIntent
       });
     } catch (err) {
       next(err);
