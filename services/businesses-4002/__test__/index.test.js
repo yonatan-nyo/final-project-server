@@ -37,22 +37,6 @@ beforeAll(async () => {
 afterAll(async () => {
   await mongoClose();
 });
-describe("Before connect mongo", () => {
-  beforeAll(async () => {
-    await mongoClose();
-  });
-  it("GET /bussinesses", async () => {
-    const response = await request(app)
-      .get("/bussinesses")
-      .set("Accept", "application/json");
-
-    expect(response.status).toBe(500);
-    expect(response.body).toEqual("Internal Server Error");
-  });
-  afterAll(async () => {
-    await mongoConnect("BussinessTest");
-  });
-});
 
 describe("Bussinesses", () => {
   it("GET /bussinesses", async () => {

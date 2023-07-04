@@ -23,16 +23,6 @@ class User {
     });
     return insertedUser;
   }
-
-  static async edit(id, username) {
-    const updatedUser = await this.getCollections().findOneAndUpdate(
-      { _id: id },
-      { $set: { username: username } },
-      { returnOriginal: false }
-    );
-
-    return updatedUser.value;
-  }
 }
 
 module.exports = User;

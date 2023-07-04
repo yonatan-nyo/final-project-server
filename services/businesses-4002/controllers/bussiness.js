@@ -13,11 +13,15 @@ class bussinessController {
   }
 
   static async getByUserId(req, res, next) {
-    const { UserId } = req.params;
+    try {
+      const { UserId } = req.params;
 
-    const data = await Bussiness.findByUserId(UserId);
+      const data = await Bussiness.findByUserId(UserId);
 
-    res.status(200).json(data);
+      res.status(200).json(data);
+    } catch (error) {
+      next(error);
+    }
   }
 
   static async getBySlug(req, res, next) {

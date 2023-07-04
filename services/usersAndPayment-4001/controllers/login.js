@@ -6,9 +6,12 @@ class loginController {
     try {
       const { username, id = [], socialMedia } = req.body;
 
-      if (id.length !== 28 || !socialMedia) throw { statusCode: 400, msg: "Invalid credentials" };
+      if (id.length !== 28 || !socialMedia)
+        throw { statusCode: 400, msg: "Invalid credentials" };
 
+      console.log(9999);
       let user = await User.getById(id);
+      console.log("here passed");
 
       if (!user) {
         const newUser = await User.create({ username, id, socialMedia });

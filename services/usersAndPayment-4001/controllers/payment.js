@@ -22,36 +22,35 @@ class paymentController {
         BussinessId,
         UserId,
         amount,
-        paymentIntent
+        paymentIntent,
       });
-    } catch (err) {
-      next(err);
+    } catch (error) {
+      next(error);
     }
   }
 
   static async successPayment(req, res, next) {
     try {
-      const { amount, UserId, BussinessId,bussinessName } = req.body;
-      await Payment.create({ amount, UserId, BussinessId,bussinessName });
+      const { amount, UserId, BussinessId, bussinessName } = req.body;
+      await Payment.create({ amount, UserId, BussinessId, bussinessName });
 
       res.status(201).json("Payment succeed");
-    } catch (err) {
-      next(err);
+    } catch (error) {
+      next(error);
     }
   }
 
   static async getByUserId(req, res, next) {
     try {
       const { UserId } = req.params;
+
       const data = await Payment.findByUserId(UserId);
-      if (!data) throw { msg: "Funds not found", statusCode: 404 };
 
       res.status(200).json(data);
-    } catch (err) {
-      next(err);
+    } catch (error) {
+      next(error);
     }
   }
-
 }
 
 module.exports = paymentController;

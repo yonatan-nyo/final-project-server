@@ -8,25 +8,20 @@ class Payment {
     return payments;
   }
 
-  static async findAll() {
-    return this.getCollections().find().toArray();
-  }
-
-  static async findById(id) {
-    return this.getCollections().findOne({ _id: new ObjectId(id) });
-  }
-
   static async findByUserId(userId) {
-    console.log("🚀 ~ file: payment.js:20 ~ Payment ~ findByUserId ~ userId:", userId)
+    console.log(
+      "🚀 ~ file: payment.js:20 ~ Payment ~ findByUserId ~ userId:",
+      userId
+    );
     return this.getCollections().find({ UserId: userId }).toArray();
   }
 
-  static async create({ amount, UserId, BussinessId,bussinessName }) {
+  static async create({ amount, UserId, BussinessId, bussinessName }) {
     const result = await this.getCollections().insertOne({
       amount,
       UserId,
       BussinessId,
-      bussinessName
+      bussinessName,
     });
 
     return {
@@ -34,12 +29,8 @@ class Payment {
       amount,
       UserId,
       BussinessId,
-      bussinessName
+      bussinessName,
     };
-  }
-
-  static async delete(id) {
-    return this.getCollections().deleteOne({ _id: new ObjectId(id) });
   }
 }
 
