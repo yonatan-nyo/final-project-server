@@ -8,21 +8,8 @@ class Fund {
     return funds;
   }
 
-  static async findAll() {
-    return this.getCollections().find().toArray();
-  }
-
   static async findByUserId(UserId) {
     return this.getCollections().find({ UserId }).toArray();
-  }
-
-  static async createFund({ PaymentId, amount, UserId, BussinessId }) {
-    return this.getCollections().insertOne({
-      PaymentId,
-      amount,
-      UserId,
-      BussinessId,
-    });
   }
 }
 

@@ -30,8 +30,6 @@ class Bussiness {
     UserId,
     locationDetail,
   }) {
-    const findSlug = await this.findBySlug(slug);
-    if (slug === findSlug?.slug) throw { msg: "Name taken", statusCode: 400 };
     return this.getCollections().insertOne({
       name,
       slug,
@@ -48,7 +46,10 @@ class Bussiness {
   }
 
   static async findOne(id) {
-    console.log("🚀 ~ file: bussinesses.js:51 ~ Bussiness ~ findOne ~ id:=====", id)
+    console.log(
+      "🚀 ~ file: bussinesses.js:51 ~ Bussiness ~ findOne ~ id:=====",
+      id
+    );
     return this.getCollections().findOne({
       _id: new ObjectId(id),
     });

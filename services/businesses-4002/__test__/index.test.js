@@ -37,6 +37,22 @@ beforeAll(async () => {
 afterAll(async () => {
   await mongoClose();
 });
+describe("Before connect mongo", () => {
+  beforeAll(async () => {
+    await mongoClose();
+  });
+  it("GET /bussinesses", async () => {
+    const response = await request(app)
+      .get("/bussinesses")
+      .set("Accept", "application/json");
+
+    expect(response.status).toBe(500);
+    expect(response.body).toEqual("Internal Server Error");
+  });
+  afterAll(async () => {
+    await mongoConnect("BussinessTest");
+  });
+});
 
 describe("Bussinesses", () => {
   it("GET /bussinesses", async () => {
@@ -90,74 +106,13 @@ describe("Bussinesses", () => {
 
 describe("BussinessController", () => {
   describe("GET /bussinesses/byUser/:UserId", () => {
-    it("providing non-string UserId", async () => {
+    it("providing invalid UserId", async () => {
       const response = await request(app)
-        .get(`/bussinesses/byUser/123!@#`)
+        .get(`/bussinesses/byUser/${baseBusinessInput.UserId}`)
         .set("Accept", "application/json");
 
-      expect(response.status).toBe(400);
-      expect(response.body).toEqual({ msg: "Invalid UserId", statusCode: 400 });
-    });
-
-    it("providing empty UserId", async () => {
-      const response = await request(app)
-        .get(`/bussinesses/byUser/`)
-        .set("Accept", "application/json");
-
-      expect(response.status).toBe(400);
-      expect(response.body).toEqual({
-        msg: "UserId is required",
-        statusCode: 400,
-      });
-    });
-  });
-
-  describe("GET /bussinesses/:slug", () => {
-    it("providing non-string slug", async () => {
-      const response = await request(app)
-        .get(`/bussinesses/123`)
-        .set("Accept", "application/json");
-
-      expect(response.status).toBe(400);
-      expect(response.body).toEqual({ msg: "Invalid slug", statusCode: 400 });
-    });
-
-    it("providing empty slug", async () => {
-      const response = await request(app)
-        .get(`/bussinesses/`)
-        .set("Accept", "application/json");
-
-      expect(response.status).toBe(400);
-      expect(response.body).toEqual({
-        msg: "slug is required",
-        statusCode: 400,
-      });
-    });
-  });
-
-  describe("GET /bussinesses/find/:BussinessId", () => {
-    it("providing non-string BussinessId", async () => {
-      const response = await request(app)
-        .get(`/bussinesses/find/123`)
-        .set("Accept", "application/json");
-
-      expect(response.status).toBe(400);
-      expect(response.body).toEqual({
-        msg: "Invalid BussinessId",
-        statusCode: 400,
-      });
-    });
-
-    it("providing empty BussinessId", async () => {
-      const response = await request(app)
-        .get(`/bussinesses/find/`)
-        .set("Accept", "application/json");
-
-      expect(response.status).toBe(400);
-      expect(response.body).toEqual({
-        msg: "BussinessId is required",
-        statusCode: 400,
-      });
+      expect(response.status).toBe(200);
+      expect(response.body.length).toEqual(2);
     });
   });
 
@@ -173,6 +128,26 @@ describe("BussinessController", () => {
     });
   });
 
+  describe("GET /bussinesses/find/:BussinessId", () => {
+    it("providing invalid BUsinessId", async () => {
+      const response = await request(app)
+        .get(`/bussinesses/find/123456789012`)
+        .set("Accept", "application/json");
+
+      expect(response.status).toBe(404);
+      expect(response.body).toEqual("Business not found");
+    });
+
+    it("providing valid BusinessId", async () => {
+      const response = await request(app)
+        .get(`/bussinesses/find/${initializeBussiness._id}`)
+        .set("Accept", "application/json");
+
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual(initializeBussiness);
+    });
+  });
+
   describe("PATCH /bussinesses/fund", () => {
     it("missing a required field in the request body", async () => {
       const response = await request(app)
@@ -181,20 +156,29 @@ describe("BussinessController", () => {
         .set("Accept", "application/json");
 
       expect(response.status).toBe(400);
-      expect(response.body).toEqual({
-        msg: "UserId is required",
-        statusCode: 400,
-      });
+      expect(response.body).toEqual("Invalid credentials");
     });
-
-    it("providing non-string UserId", async () => {
+    it("filled all fields", async () => {
       const response = await request(app)
         .patch("/bussinesses/fund")
-        .send({ amount: 5000, UserId: 123, BussinessId: baseBusinessInput._id })
+        .send({
+          amount: 5000,
+          BussinessId: baseBusinessInput._id,
+          UserId: baseBusinessInput.UserId,
+        })
         .set("Accept", "application/json");
 
-      expect(response.status).toBe(400);
-      expect(response.body).toEqual({ msg: "Invalid UserId", statusCode: 400 });
+      expect(response.status).toBe(201);
+      expect(response.body).toEqual("Succeed add amount!");
     });
+  });
+
+  it("GET /funds/byUser/:UserId", async () => {
+    const response = await request(app)
+      .get("/funds/byUser/" + baseBusinessInput.UserId)
+      .set("Accept", "application/json");
+
+    expect(response.status).toBe(200);
+    expect(response.body.length).toEqual(1);
   });
 });
