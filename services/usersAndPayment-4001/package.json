@@ -5,7 +5,8 @@
   "main": "bin/www.js",
   "scripts": {
     "test": "jest --passWithNoTests --detectOpenHandles --coverage",
-    "dev": "npx nodemon bin/www.js"
+    "dev": "npx nodemon bin/www.js",
+    "start": "npx nodemon bin/www.js"
   },
   "keywords": [],
   "author": "",
