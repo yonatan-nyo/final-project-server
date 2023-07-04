@@ -37,6 +37,8 @@ class PaymentController {
     try {
       const redis = getRedis()
 
+      
+      
       const {
         detail: { amount, UserId, BussinessId },
         slug,
@@ -87,7 +89,10 @@ class PaymentController {
           BussinessId,
         },
       });
-      console.log(data);
+
+      const dataCache = await redis.get("bussinesses");
+      if (dataCache) redis.del("bussinesses");
+
 
       res.status(201).json("Payment success");
     } catch (err) {
