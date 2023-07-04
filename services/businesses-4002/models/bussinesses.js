@@ -87,15 +87,9 @@ class Bussiness {
           subject: "Prepare for invest!", // Subject line
           text: "Selamat Kuota Investor sudah terpenuhi sebanyak 40 orang. Kami akan memberikan Informasi lebih lanjut untuk tempat dan jadwal pertemuan dalam maksimal 2x24 jam ", // plain text body
         };
-        mailTransporter.sendMail(detail, (err) => {
-          if (err) {
-            console.log(err);
-          } else {
-            console.log("email has been sent");
-          }
-        });
+        mailTransporter.sendMail(detail, () => {});
       }
-      main();
+      await main();
     }
 
     return this.getCollections().updateOne(
