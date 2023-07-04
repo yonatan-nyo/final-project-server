@@ -1,7 +1,6 @@
 const axios = require("axios");
 const { getRedis } = require("../config/redisConfig");
-const USER_URL = "http://localhost:4001";
-const BUSSINESS_URL = "http://localhost:4002";
+const { BUSSINESS_URL, USER_URL } = require("../config/api");
 
 class PaymentController {
   static async initializeStripe(req, res) {
@@ -28,7 +27,9 @@ class PaymentController {
       if (error.response) {
         res.status(error.response.status).json(error.response.data);
       } else {
-        res.status(500).json({ error: "An error occurred while processing your request" });
+        res
+          .status(500)
+          .json({ error: "An error occurred while processing your request" });
       }
     }
   }

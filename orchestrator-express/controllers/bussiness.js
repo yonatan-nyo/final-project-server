@@ -1,8 +1,7 @@
 const axios = require("axios");
 const { getRedis } = require("../config/redisConfig");
-const BUSSINESS_URL = "http://localhost:4002";
-const USER_URL = "http://localhost:4001";
 const UploadFirebase = require("../helpers/uploadFirebase");
+const { BUSSINESS_URL, USER_URL } = require("../config/api");
 
 class bussinessController {
   static async getAll(req, res, next) {
@@ -28,7 +27,9 @@ class bussinessController {
   static async getById(req, res, next) {
     try {
       const { BussinessId } = req.params;
-      const { data } = await axios.get(`${BUSSINESS_URL}/bussinesses/find/` + BussinessId);
+      const { data } = await axios.get(
+        `${BUSSINESS_URL}/bussinesses/find/` + BussinessId
+      );
 
       res.status(200).json(data);
     } catch (err) {

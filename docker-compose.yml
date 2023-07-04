@@ -8,9 +8,9 @@ services:
       - MONGODB=${MONGODB}
       - NODE_ENV=production
 
-  usersAndPayment-service:
+  users-and-payment-service:
     build: ./services/usersAndPayment-4001
-    container_name: usersAndPayment-service
+    container_name: users-and-payment-service
     ports:
       - "4001:4001"
     environment:
@@ -25,4 +25,4 @@ services:
     environment:
       - REDIS_URL=${REDIS_URL}
       - BUSSINESS_URL=http://bussiness-service:4002
-      - USER_URL=http://usersAndPayment-service:4001
+      - USER_URL=http://users-and-payment-service:4001

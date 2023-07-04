@@ -1,5 +1,5 @@
 const axios = require("axios");
-const USER_URL = "http://localhost:4001";
+const { USER_URL } = require("../config/api");
 
 class loginController {
   static async login(req, res, next) {
@@ -19,7 +19,9 @@ class loginController {
       if (error.response) {
         res.status(error.response.status).json(error.response.data);
       } else {
-        res.status(500).json({ error: "An error occurred while processing your request" });
+        res
+          .status(500)
+          .json({ error: "An error occurred while processing your request" });
       }
     }
   }

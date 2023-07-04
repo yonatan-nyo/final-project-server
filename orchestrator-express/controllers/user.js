@@ -1,7 +1,6 @@
 // userController.js
 const axios = require("axios");
-const USER_URL = "http://localhost:4001";
-const BUSINESS_URL = "http://localhost:4002";
+const { BUSSINESS_URL, USER_URL } = require("../config/api");
 
 class userController {
   static async getUser(req, res) {
@@ -17,7 +16,7 @@ class userController {
       const UserId = userProfileResponse.data.user._id;
 
       const userBusinessesResponse = await axios({
-        url: `${BUSINESS_URL}/bussinesses/byUser/${UserId}`,
+        url: `${BUSSINESS_URL}/bussinesses/byUser/${UserId}`,
         method: "GET",
       });
       // console.log("🚀 ~ file: user.js:24 ~ userController ~ getUser ~ userBusinessesResponse:", userBusinessesResponse)
@@ -26,7 +25,10 @@ class userController {
         url: `${USER_URL}/payments/byUser/${UserId}`,
         method: "GET",
       });
-      console.log("🚀 ~ file: user.js:28 ~ userController ~ getUser ~ userFundsResponse:", userFundsResponse)
+      console.log(
+        "🚀 ~ file: user.js:28 ~ userController ~ getUser ~ userFundsResponse:",
+        userFundsResponse
+      );
 
       const combinedResponseData = {
         userProfile: userProfileResponse.data,
