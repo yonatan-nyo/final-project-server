@@ -36,15 +36,16 @@ class PaymentController {
 
   static async paymentSuccess(req, res, next) {
     try {
-      console.log("masuk siniiiiiii");
-      console.log(req.body);
+      const redis = getRedis()
 
+      
+      
       const {
         detail: { amount, UserId, BussinessId },
         slug,
       } = req.body;
       //find UserID
-      const redis = getRedis();
+      ;
       const { data: user } = await axios({
         url: `${USER_URL}/users/profile`,
         method: "GET",
@@ -53,7 +54,6 @@ class PaymentController {
         },
       });
 
-      console.log("tes================");
       const {
         data: { name: bussinessName },
       } = await axios({
@@ -90,7 +90,10 @@ class PaymentController {
           BussinessId,
         },
       });
-      console.log(data);
+
+      const dataCache = await redis.get("bussinesses");
+      if (dataCache) redis.del("bussinesses");
+
 
       res.status(201).json("Payment success");
     } catch (err) {

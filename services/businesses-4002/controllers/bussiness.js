@@ -99,6 +99,7 @@ class bussinessController {
 
   static async patchFunds(req, res, next) {
     try {
+      console.log('tes');
       const { amount, UserId, BussinessId } = req.body;
 
       if (!amount || !UserId || !BussinessId) {

@@ -155,6 +155,22 @@ describe("BussinessController", () => {
       expect(response.status).toBe(201);
       expect(response.body).toEqual("Succeed add amount!");
     });
+    it("funds 40 times", async () => {
+      let response;
+      for (let i = 0; i < 40; i++) {
+        response = await request(app)
+          .patch("/bussinesses/fund")
+          .send({
+            amount: 5000,
+            BussinessId: baseBusinessInput._id,
+            UserId: baseBusinessInput.UserId,
+          })
+          .set("Accept", "application/json");
+
+        expect(response.status).toBe(201);
+        expect(response.body).toEqual("Succeed add amount!");
+      }
+    }, 70000);
   });
 
   it("GET /funds/byUser/:UserId", async () => {
